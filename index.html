@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Propiedades de la Distancia</title>
+
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #56628d;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ===== ENCABEZADO ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            text-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 span {
+            color: #ffffff;
+            -webkit-text-fill-color: #ffffff;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            margin-top: 0.3rem;
+        }
+
+        /* ===== GRID DE TARJETAS ===== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1300px;
+            width: 100%;
+        }
+
+        /* ===== TARJETA INDIVIDUAL ===== */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem 1.8rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Efecto de borde gradiente en hover */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #031451, #4a6cf7, #031451);
+            background-size: 200% 100%;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+            animation: gradientMove 2s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(3, 20, 81, 0.3);
+            border-color: rgba(3, 20, 81, 0.2);
+            background: rgba(255, 255, 255, 0.98);
+        }
+
+        .card:active {
+            transform: scale(0.97);
+            transition-duration: 0.05s;
+        }
+
+        /* ===== NÚMERO DE LA TARJETA ===== */
+        .card-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #031451;
+            opacity: 0.12;
+            line-height: 1;
+            margin-bottom: 0.2rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .card-number {
+            opacity: 0.2;
+            transform: scale(1.05);
+        }
+
+        /* ===== CONTENIDO ===== */
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-formula {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e2a3a;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .card-formula .math {
+            color: #031451;
+            font-weight: 700;
+        }
+
+        .card-formula .highlight {
+            background: rgba(3, 20, 81, 0.08);
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: #4b5563;
+            line-height: 1.7;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .card-description strong {
+            font-weight: 600;
+            color: #1e2a3a;
+        }
+
+        /* ===== BADGE DE INTERACCIÓN ===== */
+        .card-badge {
+            margin-top: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #031451;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        .card:hover .card-badge {
+            opacity: 0.8;
+        }
+
+        .card-badge i {
+            font-size: 0.6rem;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-badge i {
+            transform: translateX(4px);
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 28px;
+            max-width: 700px;
+            width: 100%;
+            padding: 3rem 2.5rem 2.5rem;
+            box-shadow: 0 50px 100px -20px rgba(3, 20, 81, 0.3);
+            position: relative;
+            animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: rgba(0, 0, 0, 0.04);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            color: #1e2a3a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.08);
+            transform: rotate(90deg);
+        }
+
+        .modal-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #031451;
+            opacity: 0.1;
+            line-height: 1;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .modal-formula {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e2a3a;
+            line-height: 1.8;
+            margin: 0.5rem 0 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .modal-formula .math {
+            color: #031451;
+        }
+
+        .modal-description {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: #4b5563;
+            line-height: 1.8;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .modal-description strong {
+            font-weight: 600;
+            color: #1e2a3a;
+        }
+
+        .modal-footer-text {
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid #eef0f5;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            font-weight: 300;
+            font-family: 'Poppins', sans-serif;
+            text-align: right;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1100px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1.5rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 0.95rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+                max-width: 500px;
+            }
+
+            .card {
+                padding: 1.5rem 1.2rem;
+                border-radius: 16px;
+            }
+
+            .card-number {
+                font-size: 2.2rem;
+            }
+
+            .card-formula {
+                font-size: 0.95rem;
+            }
+
+            .card-description {
+                font-size: 0.85rem;
+            }
+
+            .modal-content {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .modal-formula {
+                font-size: 1.2rem;
+            }
+
+            .modal-description {
+                font-size: 0.95rem;
+            }
+
+            .modal-number {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .card {
+                padding: 1.2rem 1rem;
+            }
+
+            .card-formula {
+                font-size: 0.85rem;
+            }
+
+            .card-description {
+                font-size: 0.8rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .modal-formula {
+                font-size: 1rem;
+            }
+
+            .modal-description {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #56628d;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3d4768;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== ENCABEZADO ===== -->
+    <header class="header">
+        <h1> <span>Propiedades de la Distancia</span></h1>
+        <p> Haga clic en cada tarjeta para ampliar la información.</p>
+    </header>
+
+    <!-- ===== GRID DE TARJETAS ===== -->
+    <section class="cards-grid" id="cardsGrid">
+        <!-- Las tarjetas se inyectan con JavaScript -->
+    </section>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" id="modalCloseBtn" aria-label="Cerrar">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="modalBody">
+                <!-- Se llena dinámicamente desde JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  DATOS: 4 propiedades de la distancia
+        // ============================================================
+        const data = [{
+            id: 1,
+            formula: 'd(xᵢ, xⱼ) ≥ 0',
+            description: 'La distancia entre dos puntos en el espacio p-dimensional es un número <strong>no negativo</strong>.',
+            fullDescription: 'Para toda función de distancia d : ℝᵖ × ℝᵖ → ℝ⁺, la distancia entre dos puntos cualesquiera xᵢ y xⱼ en el espacio p-dimensional es siempre un número real mayor o igual a cero.'
+        }, {
+            id: 2,
+            formula: 'd(xᵢ, xᵢ) = 0',
+            description: 'La distancia entre un elemento y <strong>el mismo</strong> es cero.',
+            fullDescription: 'La distancia de cualquier punto a sí mismo es siempre igual a cero. Este es el axioma de identidad de la métrica.'
+        }, {
+            id: 3,
+            formula: 'd(xᵢ, xⱼ) = d(xⱼ, xᵢ)',
+            description: 'La distancia es una función <strong>simétrica</strong> en sus argumentos.',
+            fullDescription: 'La distancia entre dos puntos xᵢ y xⱼ es la misma que la distancia entre xⱼ y xᵢ. La dirección no afecta la medida de la distancia.'
+        }, {
+            id: 4,
+            formula: 'd(xᵢ, xⱼ) ≤ d(xᵢ, xₖ) + d(xₖ, xⱼ)',
+            description: 'La suma de las longitudes de dos lados cualesquiera del triángulo formado por tres puntos debe siempre ser <strong>mayor</strong> que el tercer lado.',
+            fullDescription: 'Desigualdad triangular: la distancia directa entre dos puntos es siempre menor o igual que la suma de las distancias a través de un tercer punto intermedio.'
+        }];
+
+        // ============================================================
+        //  FUNCIÓN PARA CREAR UNA TARJETA
+        // ============================================================
+        function createCard(item) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.id = item.id;
+
+            card.innerHTML = `
+                <div class="card-number">#${item.id}</div>
+                <div class="card-content">
+                    <div class="card-formula">
+                        <span class="math">${item.formula}</span>
+                    </div>
+                    <div class="card-description">
+                        ${item.description}
+                    </div>
+                    <div class="card-badge">
+                        <i class="fas fa-arrow-right"></i> Ver detalle
+                    </div>
+                </div>
+            `;
+
+            // Evento: abrir modal al hacer clic
+            card.addEventListener('click', () => {
+                openModal(item);
+            });
+
+            return card;
+        }
+
+        // ============================================================
+        //  FUNCIÓN PARA ABRIR MODAL
+        // ============================================================
+        function openModal(item) {
+            const overlay = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+
+            body.innerHTML = `
+                <div class="modal-number">#${item.id}</div>
+                <div class="modal-formula">
+                    <span class="math">${item.formula}</span>
+                </div>
+                <div class="modal-description">
+                    ${item.fullDescription}
+                </div>
+                <div class="modal-footer-text">
+                    <i class="fas fa-arrow-left"></i> Haz clic fuera para cerrar
+                </div>
+            `;
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // ============================================================
+        //  CERRAR MODAL
+        // ============================================================
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================================
+        //  INICIALIZAR TARJETAS
+        // ============================================================
+        const grid = document.getElementById('cardsGrid');
+        data.forEach(item => {
+            grid.appendChild(createCard(item));
+        });
+
+        // ============================================================
+        //  EVENTOS DEL MODAL
+        // ============================================================
+        document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+
+        // Cerrar con tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        console.log('✅ 4 tarjetas de propiedades de la distancia cargadas correctamente.');
+        console.log(' Haga clic en cualquier tarjeta para ampliar la información.');
+    </script>
+
+</body>
+</html>
